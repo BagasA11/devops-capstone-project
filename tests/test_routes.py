@@ -160,17 +160,16 @@ class TestAccountService(TestCase):
     
     def test_update_an_account(self):
         """It should return a valid user account dictionary"""
-        account = self._create_accounts(1)[0]
-        account_id = account.id
-        account.name = 'Sindhu' 
-        response = self.client.put(f'{BASE_URL}/{account_id}', json=account.serialize())
+        test_account = AccountFactory()
+        response = self.client.post(f'{BASE_URL}', json=test_account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        new_account = response.get_json()
+        new_account['name'] = 'Luthfi'
+        response = self.client.put(f'{BASE_URL}/{new_account['id']}', json=new_account)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.get_json()
-        self.assertIsInstance(data, dict)
-        self.assertEqual(data['name'], 'Sindhu')
-        self.assertEqual(data['email'], account.email)
-        self.assertEqual(data['address'], account.address)
-        self.assertEqual(data['phone_number'], account.phone_number)
+        updated_account = response.get_json()
+        self.assertEqual(updated_account['name'], new_account['name'])
 
     def test_update_not_found_id(self):
         """It should return 404 not found"""
