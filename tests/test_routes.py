@@ -181,7 +181,17 @@ class TestAccountService(TestCase):
         """It should return 400 Bad Request"""
         response = self.client.put(f'{BASE_URL}/1')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
 
-
-        
+    def test_delete_an_account(self):
+        """It should deleted account and return 204 no content"""
+        test_account = self._create_accounts(1)[0]
+        id = test_account.id 
+        response = self.client.delete(f"{BASE_URL}/{id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        empty = self.client.get(f'{BASE_URL}')
+        self.assertEqual(empty.status_code, status.HTTP_200_OK)
+        self.assertEqual(empty.get_json(), [])
+            
+    def test_delete_not_found(self):
+        notfound = self.client.delete(f'{BASE_URL}/1')
+        self.assertEqual(notfound.status_code, status.HTTP_404_NOT_FOUND)
