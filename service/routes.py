@@ -62,7 +62,15 @@ def create_accounts():
 ######################################################################
 
 # ... place you code here to LIST accounts ...
-
+@app.route("/accounts")
+def get_all_accounts():
+    """It should return list of accounts"""
+    app.logger.info("making request get all accounts")
+    accounts = Account.all()
+    list_accounts = [account if isinstance(account, dict) 
+                     else account.serialize() 
+                     for account in accounts]
+    return jsonify(list_accounts), status.HTTP_200_OK
 
 ######################################################################
 # READ AN ACCOUNT
@@ -100,3 +108,4 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
+
