@@ -1,3 +1,6 @@
+# Project Information
+### Project name: devops-capstone-project
+### Desription: create a customer account microservice and implement CI/CD devops pipeline
 # DevOps Capstone Template
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
