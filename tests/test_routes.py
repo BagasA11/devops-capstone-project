@@ -195,3 +195,8 @@ class TestAccountService(TestCase):
     def test_delete_not_found(self):
         notfound = self.client.delete(f'{BASE_URL}/1')
         self.assertEqual(notfound.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_method_not_allowed_handler(self):
+        """It should  return HTTP_405_METHOD_NOT_ALLOWED"""
+        response = self.client.delete(f"{BASE_URL}")
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
