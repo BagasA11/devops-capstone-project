@@ -144,4 +144,17 @@ class TestAccountService(TestCase):
         # ensure all list item are dictionary instance
         for data in dataset:
             self.assertIsInstance(data, dict)
+    
+    def test_read_an_account(self):
+        """It should read an single account"""
+        account = self._create_accounts(1)[0]
+        response = self.client.get(f'{BASE_URL}/{account.id}', content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(data['name'], account.name)
 
+    def test_not_found_account(self):
+        """should return 404 code"""
+        response = self.client.get(f'{BASE_URL}/1', content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
