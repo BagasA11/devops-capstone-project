@@ -77,6 +77,13 @@ def get_all_accounts():
 ######################################################################
 
 # ... place you code here to READ an account ...
+@app.route("/accounts/<int:id>")
+def read_account(id):
+    """should return account if exists or not found otherwise"""
+    account = Account.find(id)
+    if account is None:
+        return abort(status.HTTP_404_NOT_FOUND)
+    return account.serialize(), status.HTTP_200_OK
 
 
 ######################################################################

@@ -153,3 +153,8 @@ class TestAccountService(TestCase):
         data = response.get_json()
         self.assertEqual(data['name'], account.name)
 
+    def test_not_found_account(self):
+        """should return 404 code"""
+        response = self.client.get(f'{BASE_URL}/1', content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
