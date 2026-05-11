@@ -124,3 +124,24 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+    def test_list_all(self):
+        """It should return list of account dictionary if exists or empty list [] otherwise"""
+        # check empty list
+        empty_response = self.client.get('/accounts')
+        self.assertNotEqual(empty_response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(empty_response.status_code, status.HTTP_200_OK)
+        empty_data = empty_response.get_json()
+        self.assertEqual(empty_data, [])
+
+        # fill and check 
+        # if create batch of 5, then returned data must be 5
+        accounts = self._create_accounts(5)
+        response = self.client.get('/accounts')
+        dataset = response.get_json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(dataset), len(accounts))
+
+        # ensure all list item are dictionary instance
+        for data in dataset:
+            self.assertIsInstance(data, dict)
+
