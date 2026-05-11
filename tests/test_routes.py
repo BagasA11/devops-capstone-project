@@ -157,4 +157,32 @@ class TestAccountService(TestCase):
         """should return 404 code"""
         response = self.client.get(f'{BASE_URL}/1', content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_update_an_account(self):
+        """It should return a valid user account dictionary"""
+        account = self._create_accounts(1)[0]
+        account_id = account.id
+        account.name = 'Sindhu' 
+        response = self.client.put(f'{BASE_URL}/{account_id}', json=account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertIsInstance(data, dict)
+        self.assertEqual(data['name'], 'Sindhu')
+        self.assertEqual(data['email'], account.email)
+        self.assertEqual(data['address'], account.address)
+        self.assertEqual(data['phone_number'], account.phone_number)
+
+    def test_update_not_found_id(self):
+        """It should return 404 not found"""
+        account = AccountFactory()
+        response = self.client.put(f'{BASE_URL}/1', json=account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_update_with_empty_data(self):
+        """It should return 400 Bad Request"""
+        response = self.client.put(f'{BASE_URL}/1')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+
+
         
