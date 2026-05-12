@@ -110,3 +110,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+flake8.ps1

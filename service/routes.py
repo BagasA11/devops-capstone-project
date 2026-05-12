@@ -3,8 +3,9 @@ Account Service
 
 This microservice handles the lifecycle of Accounts
 """
+
 # pylint: disable=unused-import
-from flask import jsonify, request, make_response, abort, url_for   # noqa; F401
+from flask import jsonify, request, make_response, abort, url_for  # noqa; F401
 from service.models import Account
 from service.common import status  # HTTP Status Codes
 from . import app  # Import Flask application
@@ -57,26 +58,33 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
 
 # ... place you code here to LIST accounts ...
+
+
 @app.route("/accounts")
 def get_all_accounts():
     """It should return list of accounts"""
     app.logger.info("making request get all accounts")
     accounts = Account.all()
-    list_accounts = [account if isinstance(account, dict) 
-                     else account.serialize() 
-                     for account in accounts]
+    list_accounts = [
+        account if isinstance(account, dict) else account.serialize()
+        for account in accounts
+    ]
     return jsonify(list_accounts), status.HTTP_200_OK
+
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
 
 # ... place you code here to READ an account ...
+
+
 @app.route("/accounts/<int:id>")
 def read_account(id):
     """should return account if exists or not found otherwise"""
@@ -90,6 +98,7 @@ def read_account(id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
+
 # ... place you code here to UPDATE an account ...
 @app.route("/accounts/<int:id>", methods=["PUT"])
 def update_an_account(id):
@@ -100,16 +109,19 @@ def update_an_account(id):
     account = Account.find(id)
     if account is None:
         return abort(status.HTTP_404_NOT_FOUND)
-    
+
     account.deserialize(payload)
     account.update()
     return account.serialize(), status.HTTP_200_OK
+
 
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
 
 # ... place you code here to DELETE an account ...
+
+
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_accounts(account_id):
     """this account will delete an account of given account_id"""
@@ -119,6 +131,7 @@ def delete_accounts(account_id):
         return abort(status.HTTP_404_NOT_FOUND)
     account.delete()
     return "", status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
@@ -135,4 +148,3 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
-
