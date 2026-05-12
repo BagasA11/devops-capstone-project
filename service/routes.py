@@ -62,12 +62,13 @@ def create_accounts():
 ######################################################################
 
 # ... place you code here to LIST accounts ...
+
 @app.route("/accounts")
 def get_all_accounts():
     """It should return list of accounts"""
     app.logger.info("making request get all accounts")
     accounts = Account.all()
-    list_accounts = [account if isinstance(account, dict) 
+    list_accounts = [account if isinstance(account, dict)
                      else account.serialize() 
                      for account in accounts]
     return jsonify(list_accounts), status.HTTP_200_OK
@@ -77,6 +78,7 @@ def get_all_accounts():
 ######################################################################
 
 # ... place you code here to READ an account ...
+
 @app.route("/accounts/<int:id>")
 def read_account(id):
     """should return account if exists or not found otherwise"""
@@ -84,7 +86,6 @@ def read_account(id):
     if account is None:
         return abort(status.HTTP_404_NOT_FOUND)
     return account.serialize(), status.HTTP_200_OK
-
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
@@ -110,6 +111,7 @@ def update_an_account(id):
 ######################################################################
 
 # ... place you code here to DELETE an account ...
+
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_accounts(account_id):
     """this account will delete an account of given account_id"""
@@ -124,7 +126,6 @@ def delete_accounts(account_id):
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
-
 def check_content_type(media_type):
     """Checks that the media type is correct"""
     content_type = request.headers.get("Content-Type")
@@ -135,4 +136,3 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
-
