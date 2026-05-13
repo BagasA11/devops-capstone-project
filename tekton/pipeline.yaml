@@ -64,7 +64,7 @@ spec:
       - name: args
         value: "-v --with-spec --spec-color"
       runAfter:
-        - clone 
+        - lint 
     - name: build
       workspaces:
         - name: source

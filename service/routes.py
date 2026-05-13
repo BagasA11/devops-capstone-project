@@ -105,7 +105,7 @@ def update_an_account(id):
     """should update an return valid account"""
     payload = request.get_json()
     if payload is None:
-        return abort(status.HTTP_400_BAD_REQUEST)
+        return "", status.HTTP_400_BAD_REQUEST
     account = Account.find(id)
     if account is None:
         return abort(status.HTTP_404_NOT_FOUND)
