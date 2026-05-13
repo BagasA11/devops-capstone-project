@@ -36,7 +36,7 @@ class TestAccountService(TestCase):
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
         init_db(app)
-        talisman.force_https = False 
+        talisman.force_https = False
 
     @classmethod
     def tearDownClass(cls):
@@ -124,19 +124,23 @@ class TestAccountService(TestCase):
             json=account.serialize(),
             content_type="test/html"
         )
-        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
     def test_list_all(self):
         """It should return list of account dictionary if exists or empty list [] otherwise"""
         # check empty list
         empty_response = self.client.get('/accounts')
-        self.assertNotEqual(empty_response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertNotEqual(
+            empty_response.status_code,
+            status.HTTP_404_NOT_FOUND)
         self.assertEqual(empty_response.status_code, status.HTTP_200_OK)
         empty_data = empty_response.get_json()
         self.assertEqual(empty_data, [])
 
-        # fill and check 
+        # fill and check
         # if create batch of 5, then returned data must be 5
         accounts = self._create_accounts(5)
         response = self.client.get('/accounts')
@@ -147,29 +151,34 @@ class TestAccountService(TestCase):
         # ensure all list item are dictionary instance
         for data in dataset:
             self.assertIsInstance(data, dict)
-    
+
     def test_read_an_account(self):
         """It should read an single account"""
         account = self._create_accounts(1)[0]
-        response = self.client.get(f'{BASE_URL}/{account.id}', content_type="application/json")
+        response = self.client.get(
+            f'{BASE_URL}/{account.id}', content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(data['name'], account.name)
 
     def test_not_found_account(self):
         """should return 404 code"""
-        response = self.client.get(f'{BASE_URL}/1', content_type="application/json")
+        response = self.client.get(
+            f'{BASE_URL}/1',
+            content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_update_an_account(self):
         """It should return a valid user account dictionary"""
         test_account = AccountFactory()
-        response = self.client.post(f'{BASE_URL}', json=test_account.serialize())
+        response = self.client.post(
+            f'{BASE_URL}', json=test_account.serialize())
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         new_account = response.get_json()
         new_account['name'] = 'Luthfi'
-        response = self.client.put(f"{BASE_URL}/{new_account['id']}", json=new_account)
+        response = self.client.put(
+            f"{BASE_URL}/{new_account['id']}", json=new_account)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         updated_account = response.get_json()
         self.assertEqual(updated_account['name'], new_account['name'])
@@ -179,7 +188,7 @@ class TestAccountService(TestCase):
         account = AccountFactory()
         response = self.client.put(f'{BASE_URL}/1', json=account.serialize())
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_update_with_empty_data(self):
         """It should return 400 Bad Request"""
         response = self.client.put(f'{BASE_URL}/1')
@@ -188,22 +197,24 @@ class TestAccountService(TestCase):
     def test_delete_an_account(self):
         """It should deleted account and return 204 no content"""
         test_account = self._create_accounts(1)[0]
-        id = test_account.id 
+        id = test_account.id
         response = self.client.delete(f"{BASE_URL}/{id}")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         empty = self.client.get(f'{BASE_URL}')
         self.assertEqual(empty.status_code, status.HTTP_200_OK)
         self.assertEqual(empty.get_json(), [])
-            
+
     def test_delete_not_found(self):
         notfound = self.client.delete(f'{BASE_URL}/1')
         self.assertEqual(notfound.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_method_not_allowed_handler(self):
         """It should  return HTTP_405_METHOD_NOT_ALLOWED"""
         response = self.client.delete(f"{BASE_URL}")
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def test_root_secure_headers_presence(self):
         """It should returned approriate headers and value"""
         response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
