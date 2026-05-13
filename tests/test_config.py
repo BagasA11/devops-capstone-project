@@ -1,8 +1,9 @@
-import os 
+import os
 
 from unittest import TestCase
 from unittest.mock import patch
 import importlib
+
 
 class TestConfig(TestCase):
     @patch.dict(os.environ, {
@@ -18,4 +19,5 @@ class TestConfig(TestCase):
         importlib.reload(config)
 
         db_uri = config.DATABASE_URI
-        self.assertEqual(db_uri, "postgresql://postgres:postgres@localhost:5432/postgres")
+        self.assertEqual(
+            db_uri, "postgresql://postgres:postgres@localhost:5432/postgres")
