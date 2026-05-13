@@ -47,6 +47,28 @@ class TestAccount(unittest.TestCase):
     ######################################################################
 
 
+    def test_none_id(self):
+        """It should return Account instance with id is none"""
+        account = Account()
+        self.assertIsNone(account.id)
+    
+    def test__rpr(self):
+        """It should return right string representation format"""
+        fake_account = AccountFactory()
+        # pylint: disable=unexpected-keyword-arg
+        account = Account(
+            name=fake_account.name,
+            email=fake_account.email,
+            address=fake_account.address,
+            phone_number=fake_account.phone_number,
+            date_joined=fake_account.date_joined,
+        )
+        
+        account.create()
+        self.assertIsNotNone(account.id)
+
+        self.assertEqual(str(account), f"<Account {account.name} id=[{account.id}]>")
+
     def test_create_an_account(self):
         """It should Create an Account and assert that it exists"""
         fake_account = AccountFactory()
