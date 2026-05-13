@@ -1,0 +1,7 @@
+(venv) theia:project$ curl -i -X DELETE http://127.0.0.1:5000/accounts/1
+HTTP/1.1 204 NO CONTENT
+Server: gunicorn
+Date: Wed, 13 May 2026 15:49:38 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Access-Control-Allow-Origin: *

@@ -1,0 +1,10 @@
+(venv) theia:project$ curl -i -X GET http://127.0.0.1:5000/accounts
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 13 May 2026 15:48:31 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 130
+Access-Control-Allow-Origin: *
+
+[{"address":"123 Main St.","date_joined":"2026-05-13","email":"john@doe.com","id":1,"name":"John Doe","phone_number":"555-1212"}]
