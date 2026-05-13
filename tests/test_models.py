@@ -6,7 +6,7 @@ import logging
 import unittest
 import os
 from service import app
-from service.models import Account, DataValidationError, db
+from service.models import Account, DataValidationError, db, PersistentBase
 from tests.factories import AccountFactory
 
 DATABASE_URI = os.getenv(
@@ -47,10 +47,9 @@ class TestAccount(unittest.TestCase):
     ######################################################################
 
 
-    def test_none_id(self):
-        """It should return Account instance with id is none"""
-        account = Account()
-        self.assertIsNone(account.id)
+    def test_persistent_base_none_id(self):
+        """It should return none id"""
+        self.assertIsNone(PersistentBase().id)
     
     def test__rpr(self):
         """It should return right string representation format"""

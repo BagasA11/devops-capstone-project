@@ -216,7 +216,7 @@ class TestAccountService(TestCase):
             status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_root_secure_headers_presence(self):
-        """It should returned approriate headers and value"""
+        """It should return security headers"""
         response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         headers = {
@@ -231,12 +231,12 @@ class TestAccountService(TestCase):
             self.assertEqual(response.headers[key], value)
 
     def test_cors_headers(self):
-        """It should returned CORS headers"""
+        """It should return a CORS header"""
         response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.headers['Access-Control-Allow-Origin'], '*')
     
     def test_update_no_payload(self):
         """It should return 400 bad request when no payload"""
-        response = self.client.put(f"{BASE_URL}/1", json=None)
+        response = self.client.put(f"{BASE_URL}/1", data="", content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
