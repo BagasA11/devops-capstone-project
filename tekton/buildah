@@ -1,0 +1,1 @@
+kubectl apply -f https://github.com/tektoncd/catalog/raw/main/task/buildah/0.9/buildah.yaml

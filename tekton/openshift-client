@@ -1,0 +1,1 @@
+kubectl apply -f https://github.com/tektoncd/catalog/raw/main/task/openshift-client/0.2/openshift-client.yaml
