@@ -65,7 +65,10 @@ class TestAccount(unittest.TestCase):
         account.create()
         self.assertIsNotNone(account.id)
 
-        self.assertEqual(str(account), f"<Account {account.name} id=[{account.id}]>")
+        self.assertEqual(
+            str(account),
+            f"<Account {account.name} id=[{account.id}]>"
+        )
 
     def test_create_an_account(self):
         """It should Create an Account and assert that it exists"""
