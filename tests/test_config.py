@@ -8,10 +8,6 @@ import importlib
 class TestConfig(TestCase):
     @patch.dict(os.environ, {
         'DATABASE_URI': '',
-        'DATABASE_USER': '',
-        'DATABASE_PASSWORD': '',
-        'DATABASE_NAME': '',
-        'DATABASE_HOST': ''
     }, clear=False)
     def test_DB_URI(self):
         """It should return custom db url"""
